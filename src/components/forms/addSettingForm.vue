@@ -8,8 +8,7 @@
             <v-divider></v-divider>
             <v-card-text
               style="height: 1000px; width: 900px"
-              class="mt-3 mr-10"
-            >
+              class="mt-3 mr-10">
               <table id="customers">
                 <tr>
                   <th>التفاصيل</th>
@@ -18,8 +17,7 @@
                 </tr>
                 <tr
                   v-for="(value, key, index) in input_contact_us"
-                  :key="index"
-                >
+                  :key="index">
                   <th>{{ key }}</th>
                   <th>{{ value }}</th>
                   <th>
@@ -27,8 +25,7 @@
                       color="red"
                       icon
                       dark
-                      @click="delete_from_input_contact_us(key, index, value)"
-                    >
+                      @click="delete_from_input_contact_us(key, index, value)">
                       <i class="fa fa-close fa-lg" aria-hidden="true"></i>
                     </v-btn>
                   </th>
@@ -47,8 +44,7 @@
                     <th>
                       <span
                         v-for="(objKey, indexkey) in Object.keys(data)"
-                        :key="indexkey"
-                      >
+                        :key="indexkey">
                         {{ objKey }} =>{{ data[objKey] }} <br
                       /></span>
                     </th>
@@ -58,8 +54,7 @@
                         color="red"
                         icon
                         dark
-                        @click="delete_detail(index)"
-                      >
+                        @click="delete_detail(index)">
                         <i class="fa fa-close fa-lg" aria-hidden="true"></i>
                       </v-btn>
                     </th>
@@ -74,8 +69,7 @@
                 color="white darken-1"
                 text
                 dark
-                @click="dialog = false"
-              >
+                @click="dialog = false">
                 غلق
               </v-btn>
               <v-btn
@@ -86,8 +80,7 @@
                   Object.keys(input_contact_us).length > 0 ? false : true
                 "
                 dark
-                @click="saveContact_us"
-              >
+                @click="saveContact_us">
                 حفظ
               </v-btn>
             </v-card-actions>
@@ -104,30 +97,28 @@
               class="mx-2"
               label="ادخل  سياسة الخصوصية هنا ...."
               rows="2"
-              v-model="selected_object.Privacy_policy"
-            ></v-textarea>
+              v-model="selected_object.Privacy_policy"></v-textarea>
           </v-col>
           <v-col cols="12" sm="4">
             <v-textarea
               class="mx-2"
               label="ادخل حول التطبيق هنا ...."
               rows="2"
-              v-model="selected_object.about_app"
-            ></v-textarea>
+              v-model="selected_object.about_app"></v-textarea>
           </v-col>
           <v-col cols="12" sm="4">
             <div
               id="my-strictly-unique-vue-upload-multiple-image"
-              style="display: flex; justify-content: center"
-            >
+              style="display: flex; justify-content: center">
               <span class="hint_image">اختر اللوكو :</span>
               <vue-upload-multiple-image
+                idUpload="image-upload-setting"
+                idEdit="image-edit-setting"
                 @upload-success="uploadImageSuccess"
                 @before-remove="beforeRemove"
                 @edit-image="editImage"
                 :data-images="images"
-                maxImageSize="5"
-              ></vue-upload-multiple-image>
+                maxImageSize="5"></vue-upload-multiple-image>
             </div>
           </v-col>
         </v-row>
@@ -139,8 +130,7 @@
               placeholder="اضف عنوان"
               label="اضف عنوان"
               hide-details="auto"
-              clearable
-            ></v-text-field>
+              clearable></v-text-field>
           </v-col>
           <v-col cols="12" sm="3">
             <v-text-field
@@ -148,8 +138,7 @@
               placeholder="اضف القيمة"
               label="اضف القيمة"
               hide-details="auto"
-              clearable
-            ></v-text-field
+              clearable></v-text-field
           ></v-col>
           <v-col cols="12" sm="1">
             <v-btn
@@ -157,8 +146,7 @@
               class="d-flex mx-2"
               fab
               dark
-              color="secondary"
-            >
+              color="secondary">
               <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             </v-btn>
           </v-col>
@@ -185,145 +173,145 @@
   </v-container>
 </template>
 <script>
-import VueUploadMultipleImage from "vue-upload-multiple-image";
+  import VueUploadMultipleImage from "vue-upload-multiple-image";
 
-export default {
-  data() {
-    return {
-      name: "",
-      menu: null,
-      images: [],
-      upload: [],
-      items: ["اللون", "الحجم"],
-      dialog: false,
-      contact_us: [],
+  export default {
+    data() {
+      return {
+        name: "",
+        menu: null,
+        images: [],
+        upload: [],
+        items: ["اللون", "الحجم"],
+        dialog: false,
+        contact_us: [],
 
-      input_contact_us: {},
-      key: "",
-      value: "",
-      rules: [(v) => !!v || "اسم الماركة مطلوب"],
-    };
-  },
-  components: {
-    VueUploadMultipleImage,
-  },
-  computed: {
-    settings() {
-      return this.$store.state.SettingMoudle.settings;
+        input_contact_us: {},
+        key: "",
+        value: "",
+        rules: [(v) => !!v || "اسم الماركة مطلوب"],
+      };
     },
-    selected_object() {
-      return this.$store.state.SettingMoudle.selected_object;
+    components: {
+      VueUploadMultipleImage,
     },
-    isEdit() {
-      return this.$store.state.SettingMoudle.isEdit;
+    computed: {
+      settings() {
+        return this.$store.state.SettingMoudle.settings;
+      },
+      selected_object() {
+        return this.$store.state.SettingMoudle.selected_object;
+      },
+      isEdit() {
+        return this.$store.state.SettingMoudle.isEdit;
+      },
     },
-  },
-  methods: {
-    delete_from_input_contact_us(key, index, value) {
-      const prop = key;
-      console.log(this.test);
-      Vue.delete(this.input_contact_us, prop); // delete the property from object
-      console.log(this.input_contact_us);
-    },
-    delete_detail(index) {
-      this.contact_us.splice(index, 1);
-      console.log(index);
-    },
-    add_details() {
-      let data = {};
-      data[this.key] = this.value;
-      Object.assign(this.input_contact_us, data);
-      console.log(this.input_contact_us);
-
-      this.key = "";
-      this.value = "";
-    },
-    saveContact_us() {
-      this.contact_us.push(this.input_contact_us);
-      this.input_contact_us = {};
-      this.dialog = false;
-      console.log(this.contact_us);
-    },
-    uploadImageSuccess(formData, index, fileList) {
-      this.upload = [];
-      fileList.forEach((element) => {
-        let img = element.path;
-        this.upload.push(img);
-      });
-      console.log(fileList);
-    },
-    beforeRemove(index, done, fileList) {
-      console.log("index", index, fileList);
-      var r = confirm("remove image");
-      if (r == true) {
-        done();
-      }
-    },
-    editImage(formData, index, fileList) {
-      console.log("edit data", formData, index, fileList);
-    },
-    validateField() {
-      if (this.$refs.form.validate()) {
+    methods: {
+      delete_from_input_contact_us(key, index, value) {
+        const prop = key;
+        console.log(this.test);
+        Vue.delete(this.input_contact_us, prop); // delete the property from object
+        console.log(this.input_contact_us);
+      },
+      delete_detail(index) {
+        this.contact_us.splice(index, 1);
+        console.log(index);
+      },
+      add_details() {
         let data = {};
-        data["Privacy_policy"] = this.selected_object.Privacy_policy;
-        data["about_app"] = this.selected_object.about_app;
-        data["contact_us"] = this.contact_us;
+        data[this.key] = this.value;
+        Object.assign(this.input_contact_us, data);
+        console.log(this.input_contact_us);
 
-        if (this.upload[0] != null) {
-          data["logo"] = this.upload[0];
+        this.key = "";
+        this.value = "";
+      },
+      saveContact_us() {
+        this.contact_us.push(this.input_contact_us);
+        this.input_contact_us = {};
+        this.dialog = false;
+        console.log(this.contact_us);
+      },
+      uploadImageSuccess(formData, index, fileList) {
+        this.upload = [];
+        fileList.forEach((element) => {
+          let img = element.path;
+          this.upload.push(img);
+        });
+        console.log(fileList);
+      },
+      beforeRemove(index, done, fileList) {
+        console.log("index", index, fileList);
+        var r = confirm("remove image");
+        if (r == true) {
+          done();
         }
+      },
+      editImage(formData, index, fileList) {
+        console.log("edit data", formData, index, fileList);
+      },
+      validateField() {
+        if (this.$refs.form.validate()) {
+          let data = {};
+          data["Privacy_policy"] = this.selected_object.Privacy_policy;
+          data["about_app"] = this.selected_object.about_app;
+          data["contact_us"] = this.contact_us;
+
+          if (this.upload[0] != null) {
+            data["logo"] = this.upload[0];
+          }
+          console.log(data);
+          if (this.settings.length > 0) {
+            data["id"] = this.selected_object.id;
+            this.editSetting(data);
+          } else {
+            this.addSetting(data);
+          }
+        }
+      },
+      addSetting(data) {
         console.log(data);
-        if (this.settings.length > 0) {
-          data["id"] = this.selected_object.id;
-          this.editSetting(data);
-        } else {
-          this.addSetting(data);
-        }
-      }
+        this.$store.dispatch("SettingMoudle/addSetting", data);
+        this.reset();
+      },
+      editSetting(data) {
+        console.log(data);
+        this.$store.dispatch("SettingMoudle/editSetting", data);
+        this.reset();
+      },
+      reset() {
+        this.$refs.form.reset();
+        this.$store.state.SettingMoudle.isEdit = false;
+      },
+      getSettings() {
+        this.$store.dispatch("SettingMoudle/getSettings");
+      },
     },
-    addSetting(data) {
-      console.log(data);
-      this.$store.dispatch("SettingMoudle/addSetting", data);
-      this.reset();
-    },
-    editSetting(data) {
-      console.log(data);
-      this.$store.dispatch("SettingMoudle/editSetting", data);
-      this.reset();
-    },
-    reset() {
-      this.$refs.form.reset();
-      this.$store.state.SettingMoudle.isEdit = false;
-    },
-    getSettings() {
+    created() {
+      this.$store.dispatch("SettingMoudle/resetFields");
       this.$store.dispatch("SettingMoudle/getSettings");
     },
-  },
-  created() {
-    this.$store.dispatch("SettingMoudle/resetFields");
-    this.$store.dispatch("SettingMoudle/getSettings");
-  },
-  watch: {
-    settings: function () {
-      this.settings.forEach((element) => {
-        this.selected_object.Privacy_policy = element.Privacy_policy;
-        this.selected_object.about_app = element.about_app;
-        Object.assign(this.contact_us, JSON.parse(element.contact_us));
-      });
+    watch: {
+      settings: function () {
+        this.settings.forEach((element) => {
+          this.selected_object.Privacy_policy = element.Privacy_policy;
+          this.selected_object.about_app = element.about_app;
+          Object.assign(this.contact_us, JSON.parse(element.contact_us));
+        });
+      },
     },
-  },
-};
+  };
 </script>
 <style>
-.hint {
-  font-size: 12px;
-  color: #ff0000;
-  top: -20px !important;
-  position: relative;
-}
-.button_submit {
-  position: relative;
-  top: -50px !important;
-  right: 100px;
-}
+  .hint {
+    font-size: 12px;
+    color: #ff0000;
+    top: -20px !important;
+    position: relative;
+  }
+  .button_submit {
+    position: relative;
+    top: -50px !important;
+    right: 100px;
+  }
 </style>

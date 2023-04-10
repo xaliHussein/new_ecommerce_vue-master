@@ -1,17 +1,17 @@
 <template>
   <v-container>
     <v-row>
-      <productsForm></productsForm>
+      <ProductsForm />
     </v-row>
     <ProductsTable />
   </v-container>
 </template>
 <script>
-  import productsForm from "../components/forms/productsForm.vue";
+  import ProductsForm from "../components/forms/ProductsForm.vue";
   import ProductsTable from "../components/tables/ProductsTable.vue";
   export default {
     components: {
-      productsForm,
+      ProductsForm,
       ProductsTable,
     },
   };

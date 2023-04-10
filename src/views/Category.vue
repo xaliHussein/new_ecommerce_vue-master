@@ -8,8 +8,8 @@
   </v-container>
 </template>
 <script>
-  import CategoryForm from "../components/forms/CategoryForm.vue";
-  import CategoriesTable from "../components/tables/CategoriesTable.vue";
+  import CategoryForm from "../components/forms/CategoryForm";
+  import CategoriesTable from "../components/tables/CategoriesTable";
   export default {
     components: {
       CategoryForm,

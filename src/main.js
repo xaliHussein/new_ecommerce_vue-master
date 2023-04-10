@@ -10,7 +10,9 @@ import Axios from "axios";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue"; // import lottie-vuejs
 import VueLazyload from "vue-lazyload";
 import Print from "vue-print-nb";
+import VueUploadMultipleImage from "vue-upload-multiple-image";
 
+Vue.component("VueUploadMultipleImage", VueUploadMultipleImage);
 Vue.use(Print);
 Vue.use(LottieAnimation); // add lottie-animation to your global scope
 Vue.use(VueLazyload);

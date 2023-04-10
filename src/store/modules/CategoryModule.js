@@ -7,6 +7,7 @@ const CategoryModule = {
     categories: [],
     category_state: "done",
     table_loading: false,
+    pop_loading: false,
     loading_add_Category: false,
     categoryQuery: "",
     pageCount: 1,
@@ -153,7 +154,7 @@ const CategoryModule = {
       });
     },
     async editCategory({ commit, state, dispatch, rootState }, data) {
-      state.table_loading = true;
+      state.pop_loading = true;
       console.log(data);
       return new Promise((resolve) => {
         commit("category_request");
@@ -167,7 +168,7 @@ const CategoryModule = {
         })
           .then((resp) => {
             console.log(resp);
-            state.table_loading = false;
+            state.pop_loading = false;
             commit("category_edit_success", resp.data.result[0]);
             dispatch(
               "snackbarToggle",
@@ -177,20 +178,18 @@ const CategoryModule = {
             resolve(resp);
           })
           .catch((err) => {
-            state.table_loading = false;
+            state.pop_loading = false;
             commit("category_error");
             dispatch(
               "snackbarToggle",
               { toggle: true, text: err.response.data.message },
               { root: true }
             );
-
-            console.warn(err);
           });
       });
     },
     async deleteCategory({ commit, state, dispatch, rootState }, data) {
-      state.table_loading = true;
+      state.pop_loading = true;
       return new Promise((resolve) => {
         commit("category_request");
         axios({
@@ -202,7 +201,7 @@ const CategoryModule = {
           method: "delete",
         })
           .then((resp) => {
-            state.table_loading = false;
+            state.pop_loading = false;
             // console.log(resp)
             commit("delete_category", data);
             dispatch(
@@ -213,15 +212,13 @@ const CategoryModule = {
             resolve(resp);
           })
           .catch((err) => {
-            state.table_loading = false;
+            state.pop_loading = false;
             commit("category_error");
             dispatch(
               "snackbarToggle",
               { toggle: true, text: err.response.data.message },
               { root: true }
             );
-
-            console.warn(err);
           });
       });
     },

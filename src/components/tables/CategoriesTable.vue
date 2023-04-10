@@ -108,7 +108,7 @@
           v-on:popClose="dialog = !dialog"
           v-on:deleteCategory="deleteCategory()" />
         <PopUpdateCategory
-          :value="dialogEdit"
+          :dialogEdit="dialogEdit"
           :updateCategory="updateCategory"
           v-on:popClose="dialogEdit = !dialogEdit" />
       </v-col>
@@ -116,9 +116,10 @@
   </v-card>
 </template>
 <script>
+  import PopUpdateCategory from "@/components/categories/PopUpdateCategory.vue";
   import PopDelete from "@/components/categories/PopDeleteCategory.vue";
   export default {
-    components: { PopDelete },
+    components: { PopDelete, PopUpdateCategory },
     data() {
       return {
         headers: [
@@ -147,6 +148,7 @@
         updateCategory: null,
         pagination: {},
         items: [5, 10, 25, 50, 100],
+        rules: [(v) => !!v || "هذا الحقل مطلوب"],
       };
     },
     computed: {
@@ -201,7 +203,6 @@
         this.dialog = true;
       },
       popEdit(item) {
-        console.log(item);
         this.updateCategory = item;
         this.dialogEdit = true;
       },

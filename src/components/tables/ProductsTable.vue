@@ -89,8 +89,8 @@
         </v-dialog>
       </v-row>
     </template> -->
-  <v-card class="mx-auto mt-9 mb-9 card-table" width="95%">
-    <v-row class="d-flex justify-center">
+  <v-card class="mx-auto mt-9 mb-9 card-table">
+    <v-row class="d-flex justify-center mb-9">
       <v-col cols="12" sm="12" md="12" lg="12">
         <v-data-table
           :headers="headers"

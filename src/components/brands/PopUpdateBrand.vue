@@ -1,18 +1,18 @@
 <template>
   <v-row justify="center">
-    <v-dialog :value="dialogEdit" max-width="900px" dir="rtl" persistent>
+    <v-dialog :value="value" max-width="900px" dir="rtl" persistent>
       <v-card class="mx-auto mt-3" style="direction: rtl">
         <v-toolbar dark color="#624fc6" class="d-flex justify-center">
           <v-toolbar-title align-center>تعديل قسم </v-toolbar-title>
         </v-toolbar>
-        <v-form ref="update_category">
+        <v-form ref="update_brand">
           <v-card-text class="mt-7">
             <v-row>
               <v-col cols="12" sm="6" md="6" lg="6">
                 <v-text-field
-                  v-model="updateCategory.name"
+                  v-model="updateBrand.name"
                   type="text"
-                  label="اسم القسم "
+                  label="اسم الماركة "
                   hide-details="auto"
                   class="font-weight-black text-field"
                   outlined
@@ -25,23 +25,27 @@
 
               <v-col cols="12" sm="4">
                 <div
-                  id="my-strictly-unique-vue-upload-multiple-image"
+                  id="unique-vue-upload-multiple-image"
                   style="display: flex; justify-content: center">
                   <VueUploadMultipleImage
-                    :idUpload="'image-upload-category' + updateCategory.id"
-                    :idEdit="'image-edit-category' + updateCategory.id"
+                    :idUpload="'image-upload-brand' + updateBrand.id"
+                    :idEdit="'image-edit-brand' + updateBrand.id"
                     @upload-success="uploadImageSuccess"
-                    @before-remove="Remove"
-                    :data-images="images_edit"
+                    @before-remove="beforeRemove"
+                    @edit-image="editImage"
+                    :data-images="images"
                     maxImageSize="5" />
                 </div>
-                <h3 class="text-center mt-n4">اختر ايقونة القسم :</h3>
+
+                <h3 class="text-center mt-n4">
+                  اختر ايقونة العلامة التجارية :
+                </h3>
               </v-col>
             </v-row>
           </v-card-text>
           <v-card-actions class="mt-2 pb-5">
             <v-btn
-              @click="update_category"
+              @click="update_brand"
               :loading="loading"
               color="#624fc6"
               class="px-4 ml-3"
@@ -66,53 +70,78 @@
   export default {
     data() {
       return {
+        images1: [],
         upload_img_edit: [],
-        images_edit: [],
+        // upload_img_edit: [],
+        // images_edit: [],
         rules: [(v) => !!v || "هذا الحقل مطلوب"],
       };
     },
     props: {
-      dialogEdit: {
+      value: {
         type: Boolean,
         default: false,
       },
-      updateCategory: {
+      updateBrand: {
         type: Object,
         default: null,
       },
     },
     computed: {
       loading() {
-        return this.$store.state.CategoryModule.pop_loading;
+        return this.$store.state.BrandModule.pop_loading;
       },
     },
     methods: {
-      update_category() {
-        if (this.$refs.update_category.validate()) {
+      update_brand() {
+        if (this.$refs.update_brand.validate()) {
           let data = {};
-          data["id"] = this.updateCategory.id;
-          data["name"] = this.updateCategory.name;
+          data["id"] = this.updateBrand.id;
+          data["name"] = this.updateBrand.name;
           if (this.upload_img_edit[0] != null) {
-            data["icone"] = this.upload_img_edit[0];
+            data["image"] = this.upload_img_edit[0];
           }
-          this.$store.dispatch("CategoryModule/editCategory", data).then(() => {
+          this.$store.dispatch("BrandModule/editBrand", data).then(() => {
             this.$emit("popClose");
           });
         }
       },
-      uploadImageSuccess(formData, index, fileList) {
+      // upload(formData, index, fileList) {
+      //   console.log("data", formData, index, fileList);
+      //   this.upload_img_edit = [];
+      //   fileList.forEach((element) => {
+      //     let image = element.path;
+      //     this.upload_img_edit.push(image);
+      //     console.log(this.upload_img_edit);
+      //   });
+      // },
+      // editImage(formData, index, fileList) {
+      //   console.log("edit data", formData, index, fileList);
+      // },
+      // Remove(index, done, fileList) {
+      //   console.log("index", index, fileList);
+      //   var r = confirm("remove image");
+      //   if (r == true) {
+      //     done();
+      //   }
+      // },
+      uploadImageSuccess1(formData, index, fileList) {
         this.upload_img_edit = [];
         fileList.forEach((element) => {
-          let image = element.path;
-          this.upload_img_edit.push(image);
-          console.log(this.upload_img_edit);
+          let img = element.path;
+          this.upload_img_edit.push(img);
         });
+        console.log(fileList);
       },
-      Remove(index, done, fileList) {
+      beforeRemove1(index, done, fileList) {
+        console.log("index", index, fileList);
         var r = confirm("remove image");
         if (r == true) {
           done();
         }
+      },
+      editImage1(formData, index, fileList) {
+        console.log("edit data", formData, index, fileList);
       },
     },
   };
@@ -120,5 +149,12 @@
 <style scoped>
   .text-field {
     direction: ltr;
+  }
+  #vue-upload-multiple-image {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
   }
 </style>

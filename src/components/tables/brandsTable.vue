@@ -1,232 +1,254 @@
 <template>
-  <v-card class="elevation-1">
-    <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="390">
-          <v-card>
-            <v-card-title class="text-h5 secondary white--text">
-              حذف القسم
-            </v-card-title>
-            <v-card-text class="mt-5 text-h5 dark--text"
-              ><b> هل أنت متأكد من عملية الحذف </b></v-card-text
-            >
-            <v-card-actions>
+  <v-card class="mx-auto mt-9 card-table" width="100%">
+    <v-row class="d-flex justify-center mb-9">
+      <v-col cols="12" sm="12" md="12" lg="12">
+        <v-data-table
+          :headers="headers"
+          :items="brands"
+          :options.sync="pagination"
+          :page.sync="pagination.page"
+          :items-per-page="pagination.itemsPerPage"
+          :loading="table_loading || false"
+          hide-default-footer
+          loading-text="جاري التحميل يرجى الأنتظار"
+          class="data_table">
+          <template v-slot:top>
+            <v-toolbar flat class="mt-2">
+              <v-toolbar-title>العلامة التجارية</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn
-                class="secondary"
-                color="white darken-1"
-                text
-                @click="dialog = false"
-              >
-                غلق
-              </v-btn>
-              <v-btn
-                class="secondary"
-                color="white darken-1"
-                text
-                @click="deleteBrand()"
-              >
-                تأكيد الحذف
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template>
-    <v-data-table
-      :headers="headers"
-      :items="brands"
-      :options.sync="pagination"
-      :page.sync="pagination.page"
-      :items-per-page="pagination.itemsPerPage"
-      :loading="table_loading || false"
-      hide-default-footer
-      loading-text="جاري التحميل يرجى الأنتظار"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>جدول الاقسام</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="brandQuery"
-            @input="queryChange"
-            append-icon="mdi-magnify"
-            label="بحث"
-            single-line
-            hide-details
-            class="mr-5"
-          ></v-text-field>
-        </v-toolbar>
-      </template>
+              <v-text-field
+                v-model="brandQuery"
+                @input="queryChange"
+                append-icon="mdi-magnify"
+                label="بحث"
+                class="font-weight-black text-field"
+                reverse
+                outlined
+                rounded
+                clearable
+                single-line
+                hide-details></v-text-field>
+            </v-toolbar>
+          </template>
 
-      <template v-slot:item="{ item }">
-        <tr @dblclick="selectedRaw(item)">
-          <td class="text-start">{{ item.name }}</td>
-          <td class="text-start">
-            <img
-              :src="server + item.image"
-              alt="image"
-              width="50px"
-              height="50px"
-            />
-          </td>
-          <td class="text-start">
-            <v-btn dark color="red" @click="getItem(item)">حذف </v-btn>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
-    <div class="text-center pt-2">
-      <v-row>
-        <v-col offset="4" cols="2">
-          <v-select
-            v-model="pagination.itemsPerPage"
-            :items="items"
-            label="عدد العناصر في الصفحة"
-          ></v-select>
-        </v-col>
-        <v-col cols="6">
-          <v-pagination
-            v-model="pagination.page"
-            :length="pageCount"
-            circle
-          ></v-pagination>
-        </v-col>
-      </v-row>
-    </div>
+          <template v-slot:item="{ item }">
+            <tr>
+              <td class="text-center text-center font-weight-black">
+                {{ item.name }}
+              </td>
+              <td class="text-center text-center font-weight-black">
+                <img
+                  :src="server + item.image"
+                  alt="image"
+                  width="50px"
+                  height="50px" />
+              </td>
+
+              <td class="text-center font-weight-black">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click="PopDelete(item)"
+                      fab
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on">
+                      <Icon
+                        icon="ic:round-delete-forever"
+                        color="#C62828"
+                        width="32" />
+                    </v-btn>
+                  </template>
+                  <span>حذف القسم</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click="popEdit(item)"
+                      fab
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on">
+                      <Icon
+                        icon="mdi:application-edit"
+                        color="#311B92"
+                        width="30" />
+                    </v-btn>
+                  </template>
+                  <span>تعديل القسم</span>
+                </v-tooltip>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+        <div class="text-center py-5">
+          <v-row>
+            <v-spacer></v-spacer>
+            <v-col align-self="center" cols="5" sm="5" md="3" lg="3">
+              <v-select
+                v-model="pagination.itemsPerPage"
+                :items="items"
+                outlined
+                rounded
+                single-line
+                hide-details
+                reverse
+                label="عدد العناصر"></v-select>
+            </v-col>
+            <v-col align-self="center" cols="5" sm="5" md="3" lg="3">
+              <v-pagination
+                v-model="pagination.page"
+                :length="pageCount"
+                circle
+                color="#624fc6"></v-pagination>
+            </v-col>
+          </v-row>
+        </div>
+        <PopDeleteBrand
+          :value="dialogDeleteBrand"
+          v-on:popClose="dialogDeleteBrand = !dialogDeleteBrand"
+          v-on:deleteBrand="deleteBrand()" />
+        <PopUpdateBrand
+          :value="dialogUpdateBrand"
+          :updateBrand="updateBrand"
+          v-on:popClose="dialogUpdateBrand = !dialogUpdateBrand" />
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      headers: [
-        {
-          text: "اسم الماركة",
-          value: "name",
-          class: "secondary white--text title",
-          sortable: false,
-        },
-        {
-          text: "صورة الماركة",
-          value: "image",
-          class: "secondary white--text title",
-          sortable: false,
-        },
-        {
-          text: "الحذف",
-          class: "secondary white--text title",
-          sortable: false,
-        },
-      ],
-      item: {},
-      dialog: false,
-      pagination: {},
-      items: [5, 10, 25, 50, 100],
-    };
-  },
-  computed: {
-    server() {
-      return this.$store.state.server;
-    },
-
-    brandQuery: {
-      set(val) {
-        this.$store.state.BrandModule.brandQuery = val;
-      },
-      get() {
-        return this.$store.state.BrandModule.brandQuery;
-      },
-    },
-    pageCount: function () {
-      return this.$store.state.BrandModule.pageCount;
-    },
-    totalItems: function () {
-      return this.$store.state.BrandModule.brands.length;
-    },
-
-    brands() {
-      return this.$store.state.BrandModule.brands;
-    },
-    table_loading() {
-      return this.$store.state.BrandModule.table_loading;
-    },
-    brand_params: {
-      set(val) {
-        this.$store.state.BrandModule.params = val;
-      },
-      get() {
-        return this.$store.state.BrandModule.params;
-      },
-    },
-  },
-  methods: {
-    // scrollToTop: function () {
-    //   document
-    //     .getElementById("scroll-to-top")
-    //     .scrollIntoView({ behavior: "smooth" });
-    // },
-    selectedRaw(item) {
-      console.log(item);
-      this.$store.state.BrandModule.selected_object = {};
-      Object.assign(this.$store.state.BrandModule.selected_object, item);
-      this.$store.state.BrandModule.isEdit = true;
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-      // this.scrollToTop();
-      // if (this.selectedItem != null && index == this.selectedItem) {
-      //   this.selectedItem = null;
-      // } else {
-      //   this.selectedItem = index;
-      // }
-    },
-    queryChange(val) {
-      this.searchDebounce();
-    },
-    getItem(item) {
-      this.dialog = true;
-      this.item = item;
-    },
-
-    deleteBrand() {
-      console.log(this.item);
-      this.$store.dispatch("BrandModule/deleteBrand", this.item);
-      this.dialog = false;
-      this.item = {};
-    },
-    getBrands() {
-      let pagination = this.pagination;
-      let par = {
-        ...pagination,
+  import PopDeleteBrand from "@/components/brands/PopDeleteBrand.vue";
+  import PopUpdateBrand from "@/components/brands/PopUpdateBrand.vue";
+  export default {
+    components: { PopDeleteBrand, PopUpdateBrand },
+    data() {
+      return {
+        headers: [
+          {
+            text: "اسم الماركة",
+            value: "name",
+            align: "center",
+            class: "secondary white--text title",
+          },
+          {
+            text: "صورة الماركة",
+            value: "image",
+            align: "center",
+            class: "secondary white--text title",
+          },
+          {
+            text: "العمليات",
+            class: "secondary white--text title",
+            align: "center",
+          },
+        ],
+        delete_brand: {},
+        updateBrand: {},
+        dialogDeleteBrand: false,
+        dialogUpdateBrand: false,
+        pagination: {},
+        items: [5, 10, 25, 50, 100],
       };
-      this.brand_params = par;
-      this.$store.dispatch("BrandModule/getBrands");
     },
-    searchDebounce() {
-      clearTimeout(this._timerId);
-      // delay new call 1000ms
-      this._timerId = setTimeout(() => {
-        this.$store.dispatch("BrandModule/resetFields");
-        this.pagination.page = 1;
-        this.getBrands();
-      }, 1000);
-    },
-  },
-  created() {
-    this.$store.dispatch("BrandModule/resetFields");
-  },
-  watch: {
-    pagination: {
-      handler() {
-        this.getBrands();
+    computed: {
+      server() {
+        return this.$store.state.server;
       },
-      deep: true,
+
+      brandQuery: {
+        set(val) {
+          this.$store.state.BrandModule.brandQuery = val;
+        },
+        get() {
+          return this.$store.state.BrandModule.brandQuery;
+        },
+      },
+      pageCount: function () {
+        return this.$store.state.BrandModule.pageCount;
+      },
+      totalItems: function () {
+        return this.$store.state.BrandModule.brands.length;
+      },
+
+      brands() {
+        return this.$store.state.BrandModule.brands;
+      },
+      table_loading() {
+        return this.$store.state.BrandModule.table_loading;
+      },
+      brand_params: {
+        set(val) {
+          this.$store.state.BrandModule.params = val;
+        },
+        get() {
+          return this.$store.state.BrandModule.params;
+        },
+      },
     },
-  },
-};
+    methods: {
+      queryChange(val) {
+        this.searchDebounce();
+      },
+      PopDelete(item) {
+        this.dialogDeleteBrand = true;
+        this.delete_brand = item;
+        console.log("this.delete_brand", this.delete_brand);
+      },
+      popEdit(item) {
+        this.updateBrand = item;
+        this.dialogUpdateBrand = true;
+      },
+
+      deleteBrand() {
+        let data = {};
+        data["id"] = this.delete_brand.id;
+        this.$store.dispatch("BrandModule/deleteBrand", data).then(() => {
+          this.dialogDeleteBrand = false;
+        });
+      },
+      getBrands() {
+        let pagination = this.pagination;
+        let par = {
+          ...pagination,
+        };
+        this.brand_params = par;
+        this.$store.dispatch("BrandModule/getBrands");
+      },
+      searchDebounce() {
+        clearTimeout(this._timerId);
+        // delay new call 1000ms
+        this._timerId = setTimeout(() => {
+          this.$store.dispatch("BrandModule/resetFields");
+          this.pagination.page = 1;
+          this.getBrands();
+        }, 1000);
+      },
+    },
+    created() {
+      this.$store.dispatch("BrandModule/resetFields");
+    },
+    watch: {
+      pagination: {
+        handler() {
+          this.getBrands();
+        },
+        deep: true,
+      },
+    },
+  };
 </script>
-<style></style>
+<style scoped>
+  .data_table {
+    direction: rtl;
+  }
+  .card-table {
+    box-shadow: 0px 0px 0px 0px !important;
+    border-radius: 25px !important;
+  }
+  .text-field {
+    direction: ltr;
+  }
+</style>

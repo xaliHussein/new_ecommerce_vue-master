@@ -26,12 +26,13 @@
               <div
                 id="my-strictly-unique-vue-upload-multiple-image"
                 style="display: flex; justify-content: center">
-                <vue-upload-multiple-image
+                <VueUploadMultipleImage
+                  idUpload="image-upload-Category"
+                  idEdit="image-edit-Category"
                   @upload-success="uploadImageSuccess"
                   @before-remove="beforeRemove"
-                  @edit-image="editImage"
                   :data-images="images"
-                  maxImageSize="5"></vue-upload-multiple-image>
+                  maxImageSize="5" />
               </div>
               <h3 class="text-center mt-n4">اختر ايقونة للقسم :</h3>
             </v-col>
@@ -59,21 +60,16 @@
   </v-col>
 </template>
 <script>
-  import VueUploadMultipleImage from "vue-upload-multiple-image";
-
   export default {
     data() {
       return {
         name: "",
         images: [],
         upload: [],
-        category_id: null,
         rules: [(value) => !!value || "هذا الحقل مطلوب"],
       };
     },
-    components: {
-      VueUploadMultipleImage,
-    },
+
     computed: {
       loading() {
         return this.$store.state.CategoryModule.loading_add_Category;
@@ -117,10 +113,6 @@
         }
       },
 
-      // editCategory(data) {
-      //   this.$store.dispatch("CategoryModule/editCategory", data);
-      //   this.reset();
-      // },
       reset() {
         this.$refs.form.reset();
         this.images = [];

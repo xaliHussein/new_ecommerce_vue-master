@@ -3,15 +3,13 @@
     <v-dialog :value="value" persistent max-width="390">
       <v-card>
         <v-toolbar class="d-flex justify-center" color="#624fc6">
-          <h2 style="color: white">حذف القسم</h2>
+          <h2 style="color: white">حذف ماركة</h2>
         </v-toolbar>
         <v-card-title class="mt-4 d-flex justify-end"
           ><h4>هل أنت متأكد من عملية الحذف</h4></v-card-title
         >
-
         <v-card-actions>
           <v-spacer></v-spacer>
-
           <v-col cols="auto">
             <v-btn outlined color="#C62828" v-on:click="$emit('popClose')">
               <h4>اغلاق</h4>
@@ -19,7 +17,7 @@
           </v-col>
           <v-col cols="auto">
             <v-btn
-              v-on:click="$emit('deleteCategory')"
+              v-on:click="$emit('deleteBrand')"
               :loading="loading"
               color="#624fc6"
               class="px-4"
@@ -44,7 +42,7 @@
     },
     computed: {
       loading() {
-        return this.$store.state.CategoryModule.pop_loading;
+        return this.$store.state.BrandModule.pop_loading;
       },
     },
   };

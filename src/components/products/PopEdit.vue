@@ -3,8 +3,10 @@
     <v-row justify="center" dir="rtl">
       <v-dialog :value="dialog" max-width="900px" dir="rtl">
         <v-card style="direction: rtl">
-          <v-toolbar class="d-flex justify-center" color="#624fc6">
-            <h2 style="color: white">تعديل المنتج</h2>
+          <v-toolbar dark color="#624fc6" class="d-flex justify-center">
+            <v-toolbar-title class="d-flex justify-center" align-center
+              >تعديل المنتج</v-toolbar-title
+            >
           </v-toolbar>
           <v-form ref="form">
             <v-card-text class="mt-4">
@@ -303,7 +305,6 @@
   </v-container>
 </template>
 <script>
-  import moment from "moment";
   export default {
     props: {
       product_details: {

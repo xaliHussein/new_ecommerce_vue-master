@@ -1,4 +1,3 @@
-<
 <template>
   <v-container class="login" fluid>
     <v-row class="justify-center">
@@ -18,7 +17,7 @@
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6" class="justify-center">
                 <v-card-title class="d-flex justify-center mt-6">
-                  <h2>اهلا بك في لوحة تحكم</h2>
+                  <h2>اهلا بك في لوحة التحكم</h2>
                 </v-card-title>
                 <v-card-text class="mt-2">
                   <v-text-field
@@ -119,6 +118,7 @@
 <style scoped>
   .card {
     margin-top: 60px !important;
+    direction: ltr !important;
     margin: auto;
     border-radius: 15px;
     /* border: solid 1px #ad519c; */
