@@ -172,6 +172,8 @@
             <v-col cols="12" sm="6" md="6" lg="6" class="mr-4">
               <div id="my-strictly-unique-vue-upload-multiple-image">
                 <VueUploadMultipleImage
+                  dragText="اضف صور"
+                  browseText=""
                   idUpload="image-upload-product"
                   idEdit="image-edit-product"
                   @upload-success="uploadImageSuccess"

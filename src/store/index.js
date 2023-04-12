@@ -73,13 +73,14 @@ export default new Vuex.Store({
       state.user_name = data.result[0].user_name;
       state.phone_number = data.result[0].phone_number;
       state.user_type = data.result[0].user_type;
-      // state.active = data.result[0].active;
+      state.active = data.result[0].active;
     },
     CLEAR_USER() {
       localStorage.removeItem("token");
       localStorage.removeItem("user_name");
       localStorage.removeItem("user_type");
-      // localStorage.removeItem("active");
+      delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("active");
 
       location.reload();
     },
@@ -118,7 +119,7 @@ export default new Vuex.Store({
             localStorage.setItem("token", token);
             localStorage.setItem("full_name", data.result[0].user_name);
             localStorage.setItem("user_type", data.result[0].user_type);
-            // localStorage.setItem("active", data.result[0].active);
+            localStorage.setItem("active", data.result[0].active);
             //
 
             // commit("auth_success", token);
@@ -134,14 +135,7 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      return new Promise((resolve) => {
-        commit("logout");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user_name");
-        localStorage.removeItem("user_type");
-        delete axios.defaults.headers.common["Authorization"];
-        resolve();
-      });
+      commit("CLEAR_USER");
     },
     getStatistics({ commit, state }) {
       axios({

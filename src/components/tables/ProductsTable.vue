@@ -136,9 +136,6 @@
               </td>
               <td class="text-center font-weight-black">{{ item.desc }}</td>
               <td class="text-center font-weight-black">
-                <!-- <v-btn dark icon color="red" @click="getItem(item, 'delete')">
-                  <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
-                </v-btn> -->
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -172,17 +169,8 @@
                         width="30" />
                     </v-btn>
                   </template>
-                  <span>تعديل القسم</span>
+                  <span>تعديل المنتج</span>
                 </v-tooltip>
-                <!-- <v-btn
-              :disabled="item.advance_details != null ? false : true"
-              dark
-              icon
-              color="yellow"
-              @click="getItem(item, 'info')"
-            >
-              <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i>
-            </v-btn> -->
               </td>
             </tr>
           </template>

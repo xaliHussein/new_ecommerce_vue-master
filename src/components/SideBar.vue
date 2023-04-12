@@ -48,6 +48,17 @@
             </v-list-item-icon>
           </v-list-item>
         </v-list-item-group>
+        <div class="d-flex justify-center mt-3 mb-5">
+          <v-btn
+            class="btn-logout"
+            x-large
+            @click="logout"
+            color="#624fc6"
+            outlined>
+            <h4>تسجيل خروج</h4>
+            <Icon icon="majesticons:logout-line" color="#624fc6" width="32" />
+          </v-btn>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -67,7 +78,7 @@
           link: "categories",
         },
         {
-          title: "الماركات",
+          title: "العلامات التجارية",
           icon: "material-symbols:list-alt-add-rounded",
           link: "brands",
         },
@@ -97,7 +108,7 @@
           link: "users",
         },
         {
-          title: "الادمنية",
+          title: "المشرفون",
           icon: "material-symbols:admin-panel-settings-rounded",
           link: "admins",
         },
@@ -114,15 +125,10 @@
       },
     },
     methods: {
-      signOut: function () {
+      logout() {
         this.$store.dispatch("resetFields");
         this.user_type = -1;
-        console.log("in log out ");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user_name");
-        this.$store.dispatch("logout").then(() => {
-          this.$router.replace("/login");
-        });
+        this.$store.dispatch("logout");
       },
     },
 
@@ -135,4 +141,9 @@
   };
 </script>
 
-<style></style>
+<style scoped>
+  .btn-logout {
+    margin-bottom: 30px;
+    border-radius: 15px !important;
+  }
+</style>

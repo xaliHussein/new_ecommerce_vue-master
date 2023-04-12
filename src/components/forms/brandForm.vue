@@ -11,7 +11,7 @@
               <v-text-field
                 v-model="selected_object.name"
                 type="text"
-                label="اسم القسم "
+                label="اسم العلامة التجارية "
                 class="font-weight-black text-field"
                 outlined
                 reverse

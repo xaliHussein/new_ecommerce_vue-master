@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-card class="mt-5">
-      <OrdersTable />
-    </v-card>
+    <OrdersTable />
   </v-container>
 </template>
 <script>

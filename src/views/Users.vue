@@ -6,18 +6,19 @@
       </v-toolbar>
       <v-card-text> <addUserForm></addUserForm></v-card-text>
     </v-card> -->
-    <v-divider></v-divider>
-    <v-card class="mt-5"> <usersTable></usersTable> </v-card>
+    <!-- <v-row><AddUserForm /></v-row> -->
+
+    <UsersTable />
   </v-container>
 </template>
 <script>
-// import addUserForm from "../components/forms/addUserForm.vue";
+  // import AddUserForm from "../components/forms/AddUserForm.vue";
 
-import usersTable from "../components/tables/usersTable.vue";
-export default {
-  components: {
-    usersTable,
-    // addUserForm,
-  },
-};
+  import UsersTable from "../components/tables/UsersTable";
+  export default {
+    components: {
+      UsersTable,
+      // AddUserForm,
+    },
+  };
 </script>

@@ -33,7 +33,7 @@
           </template>
 
           <template v-slot:item="{ item }">
-            <tr @dblclick="selectedRaw(item)">
+            <tr>
               <td class="text-center font-weight-black">{{ item.name }}</td>
               <td class="text-center font-weight-black">
                 <v-avatar rounded size="100">
@@ -143,9 +143,10 @@
         ],
         item: {},
         delete_category: null,
+        updateCategory: null,
         dialog: false,
         dialogEdit: false,
-        updateCategory: null,
+
         pagination: {},
         items: [5, 10, 25, 50, 100],
         rules: [(v) => !!v || "هذا الحقل مطلوب"],
@@ -184,17 +185,6 @@
       },
     },
     methods: {
-      selectedRaw(item) {
-        console.log(item);
-        this.$store.state.CategoryModule.selected_object = {};
-        Object.assign(this.$store.state.CategoryModule.selected_object, item);
-        this.$store.state.CategoryModule.isEdit = true;
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
-      },
       queryChange(val) {
         this.searchDebounce();
       },

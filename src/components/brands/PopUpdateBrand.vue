@@ -3,7 +3,9 @@
     <v-dialog :value="value" max-width="900px" dir="rtl" persistent>
       <v-card class="mx-auto mt-3" style="direction: rtl">
         <v-toolbar dark color="#624fc6" class="d-flex justify-center">
-          <v-toolbar-title align-center>تعديل قسم </v-toolbar-title>
+          <v-toolbar-title align-center
+            >تعديل العلامة التجارية
+          </v-toolbar-title>
         </v-toolbar>
         <v-form ref="update_brand">
           <v-card-text class="mt-7">
@@ -12,7 +14,7 @@
                 <v-text-field
                   v-model="updateBrand.name"
                   type="text"
-                  label="اسم الماركة "
+                  label="اسم العلامة التجارية "
                   hide-details="auto"
                   class="font-weight-black text-field"
                   outlined
@@ -72,8 +74,6 @@
       return {
         images1: [],
         upload_img_edit: [],
-        // upload_img_edit: [],
-        // images_edit: [],
         rules: [(v) => !!v || "هذا الحقل مطلوب"],
       };
     },
@@ -106,25 +106,7 @@
           });
         }
       },
-      // upload(formData, index, fileList) {
-      //   console.log("data", formData, index, fileList);
-      //   this.upload_img_edit = [];
-      //   fileList.forEach((element) => {
-      //     let image = element.path;
-      //     this.upload_img_edit.push(image);
-      //     console.log(this.upload_img_edit);
-      //   });
-      // },
-      // editImage(formData, index, fileList) {
-      //   console.log("edit data", formData, index, fileList);
-      // },
-      // Remove(index, done, fileList) {
-      //   console.log("index", index, fileList);
-      //   var r = confirm("remove image");
-      //   if (r == true) {
-      //     done();
-      //   }
-      // },
+
       uploadImageSuccess1(formData, index, fileList) {
         this.upload_img_edit = [];
         fileList.forEach((element) => {
