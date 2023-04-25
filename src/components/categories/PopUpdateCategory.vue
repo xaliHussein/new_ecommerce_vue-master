@@ -33,7 +33,9 @@
                     @upload-success="uploadImageSuccess"
                     @before-remove="Remove"
                     :data-images="images_edit"
-                    maxImageSize="5" />
+                    maxImageSize="5"
+                    dragText="اضف صورة"
+                    browseText="" />
                 </div>
                 <h3 class="text-center mt-n4">اختر ايقونة القسم :</h3>
               </v-col>
@@ -105,13 +107,13 @@
         fileList.forEach((element) => {
           let image = element.path;
           this.upload_img_edit.push(image);
-          console.log(this.upload_img_edit);
         });
       },
       Remove(index, done, fileList) {
-        var r = confirm("remove image");
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload_img_edit.splice(index, 1);
         }
       },
     },

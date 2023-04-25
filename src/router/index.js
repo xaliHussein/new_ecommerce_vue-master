@@ -11,7 +11,8 @@ import Products from "../views/Products.vue";
 import Users from "../views/Users.vue";
 import Orders from "../views/Order.vue";
 import Admin from "../views/Admin.vue";
-import Setting from "../views/Setting.vue";
+import ContactUs from "../views/ContactUs.vue";
+import Settings from "../views/Settings.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -20,7 +21,6 @@ const routes = [
     name: "Home",
     component: Home,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/login",
@@ -34,21 +34,18 @@ const routes = [
     name: "Category",
     component: Category,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/brands",
     name: "Brands",
     component: Brands,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/coupons",
     name: "Coupons",
     component: Coupons,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/ads",
@@ -56,41 +53,42 @@ const routes = [
     component: Ads,
     beforeEnter: loggedIn,
   },
-  // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
+
   {
     path: "/products",
     name: "Products",
     component: Products,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/users",
     name: "Users",
     component: Users,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/orders",
     name: "Orders",
     component: Orders,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
   {
     path: "/admins",
     name: "admins",
     component: Admin,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
+  },
+  {
+    path: "/contact-us",
+    name: "contact-us",
+    component: ContactUs,
+    beforeEnter: loggedIn,
   },
   {
     path: "/settings",
     name: "settings",
-    component: Setting,
+    component: Settings,
     beforeEnter: loggedIn,
-    // هاي ال meta  حتى محد يوصل لهاي صفحة اذا هو مو مسجل دخول
   },
 ];
 
@@ -99,23 +97,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requireNotLogin)) {
-//     if (store.getters.isLoggedIn) {
-//       next("/");
-//     } else {
-//       next();
-//     }
-//   } else if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (store.getters.isLoggedIn) {
-//       next();
-//       return;
-//     }
-//     next("/login");
-//   } else {
-//     next();
-//   }
-// });
 
 function loggedIn(to, from, next) {
   const token = localStorage.getItem("token");

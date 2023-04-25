@@ -32,7 +32,7 @@
         </v-dialog>
       </v-row>
     </template> -->
-  <v-card class="mx-auto mt-9 card-table" width="100%">
+  <v-card class="mx-auto mt-10 card-table" width="100%">
     <v-row class="d-flex justify-center mb-9">
       <v-col cols="12" sm="12" md="12" lg="12">
         <v-data-table
@@ -85,43 +85,64 @@
                 {{ item.phone_number }}
               </td>
               <td class="text-center font-weight-black">
-                <span>{{
-                  item.created_at | moment("dddd, MMMM Do YYYY")
-                }}</span>
+                <span>{{ moment(item.created_at).format("YYYY-MM-DD") }}</span>
               </td>
 
               <td class="text-center font-weight-black">
-                <v-btn
-                  dark
-                  color="green"
-                  @click="getItem(item)"
-                  v-if="item.active == 0">
-                  تفعيل
-                </v-btn>
-                <v-btn
-                  v-if="item.active == 1"
-                  dark
-                  color="red"
-                  @click="getItem(item)">
-                  الغاء تفعيل
-                </v-btn>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-if="item.active == 1"
+                      @click="getItem(item)"
+                      fab
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on">
+                      <Icon icon="mdi:user-block" color="#C62828" width="32" />
+                    </v-btn>
+                  </template>
+                  <span>الغاء تفعيل</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-if="item.active == 0"
+                      @click="getItem(item)"
+                      fab
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on">
+                      <Icon icon="mdi:user-check" color="#70e000" width="32" />
+                    </v-btn>
+                  </template>
+                  <span>تفعيل</span>
+                </v-tooltip>
               </td>
             </tr>
           </template>
         </v-data-table>
-        <div class="text-center pt-2">
+        <div class="text-center py-5">
           <v-row>
-            <v-col offset="4" cols="2">
+            <v-spacer></v-spacer>
+            <v-col align-self="center" cols="5" sm="5" md="3" lg="3">
               <v-select
                 v-model="pagination.itemsPerPage"
                 :items="items"
-                label="عدد العناصر في الصفحة"></v-select>
+                outlined
+                rounded
+                single-line
+                hide-details
+                reverse
+                label="عدد العناصر"></v-select>
             </v-col>
-            <v-col cols="6">
+            <v-col align-self="center" cols="5" sm="5" md="3" lg="3">
               <v-pagination
                 v-model="pagination.page"
                 :length="pageCount"
-                circle></v-pagination>
+                circle
+                color="#624fc6"></v-pagination>
             </v-col>
           </v-row>
         </div>
@@ -213,7 +234,6 @@
         this.searchDebounce();
       },
       getItem(item) {
-        console.log(item);
         this.$store.dispatch("UserModule/toggleActive", item);
         this.$store.dispatch("UserModule/getUsers");
       },

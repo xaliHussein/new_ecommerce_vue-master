@@ -50,6 +50,7 @@
                 rounded
                 single-line
                 clearable
+                :rules="rules"
                 :value="arr">
                 <template v-slot:item="{ item }">
                   <v-list-item-content @click.stop="multipleSelection(item)">{{
@@ -153,7 +154,7 @@
         images: [],
         upload: [],
         products_id: [],
-        rules: [(v) => !!v || "اسم الماركة مطلوب"],
+        rules: [(v) => !!v || " هذا الحقل مطلوب"],
       };
     },
 
@@ -178,10 +179,10 @@
         console.log(fileList);
       },
       beforeRemove(index, done, fileList) {
-        console.log("index", index, fileList);
-        var r = confirm("remove image");
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload.splice(index, 1);
         }
       },
       editImage(formData, index, fileList) {

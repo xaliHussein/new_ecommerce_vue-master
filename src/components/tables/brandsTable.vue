@@ -38,11 +38,14 @@
                 {{ item.name }}
               </td>
               <td class="text-center text-center font-weight-black">
-                <img
-                  :src="server + item.image"
-                  alt="image"
-                  width="50px"
-                  height="50px" />
+                <a :href="server + item.image" id="image">
+                  <img
+                    :src="server + item.image"
+                    alt="image"
+                    width="50px"
+                    height="50px"
+                    class="img" />
+                </a>
               </td>
 
               <td class="text-center font-weight-black">

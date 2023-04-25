@@ -10,23 +10,29 @@ import AdsMoudle from "./modules/AdsMoudle";
 import UserModule from "./modules/UserModule";
 import OrderMoudle from "./modules/OrderMoudle";
 import SettingMoudle from "./modules/SettingMoudle";
+import font from "./modules/font";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     server: "http://164.92.249.184:8009",
     snackbar: false,
-    textSnackbar: "",
+    textSnackbar: [],
+    snack_message: {},
     token: localStorage.getItem("token"),
     full_name: localStorage.getItem("full_name"),
     user_type: localStorage.getItem("user_type"),
-
     loading_login: false,
+    loading_statistics: false,
     status: "",
     statistics: [],
+    chartData: {},
   },
+
   getters: {
-    // isLoggedIn: (state) => !!state.token,
+    snackbar(state) {
+      return !!state.snackbar;
+    },
   },
   mutations: {
     // auth_success(state, token) {
@@ -36,22 +42,64 @@ export default new Vuex.Store({
     // auth_request(state) {
     //   state.status = "loading";
     // },
+    SNACK_MESSAGE(state, snack_message) {
+      state.snack_message = snack_message;
+      state.snackbar = true;
+    },
+    TIME_OUT(state) {
+      state.snackbar = false;
+      state.snack_message = null;
+    },
+
     auth_error(state) {
       state.status = "error";
     },
     statistics_request(state, statistics) {
+      let object = {};
+      let datasets = [];
+      let chartData = {};
+      let labels = [];
+      let pie_data = [];
+      statistics.brands.forEach((element) => {
+        labels.push(element.name);
+        pie_data.push(element.products_count);
+      });
+      object["backgroundColor"] = [
+        "#c89f9c",
+        "#219ebc",
+        "#fcbf49",
+        "#967aa1",
+        "#0ead69",
+        "#E384FF",
+        "#46C2CB",
+        "#F5EDCE",
+        "#ADDDD0",
+        "#47B5FF",
+        "#EC255A",
+        "#9AE66E",
+        "#AD6C80",
+        "#EE6F57",
+        "#D7385E",
+        "#1EAFED",
+        "#21ce8f",
+      ];
+      object["data"] = pie_data;
+      datasets.push(object);
+
+      chartData["labels"] = labels;
+      chartData["datasets"] = datasets;
       let data = [
         {
           title: "الطلبات المعلقة",
-          statistics: statistics.deliverd_orders,
+          statistics: statistics.pending_orders,
           color: "#FF9800",
           icon: "material-symbols:hourglass-bottom-rounded",
         },
         {
-          title: "الطلبات المكتملة",
-          statistics: statistics.pending_orders,
+          title: "الاقسام",
+          statistics: 6,
           color: "#70e000",
-          icon: "pajamas:todo-done",
+          icon: "material-symbols:format-list-bulleted",
         },
         {
           title: "المستخدمون",
@@ -68,6 +116,7 @@ export default new Vuex.Store({
       ];
 
       state.statistics = data;
+      state.chartData = chartData;
     },
     LOGIN_USER(state, data) {
       state.user_name = data.result[0].user_name;
@@ -77,7 +126,7 @@ export default new Vuex.Store({
     },
     CLEAR_USER() {
       localStorage.removeItem("token");
-      localStorage.removeItem("user_name");
+      localStorage.removeItem("full_name");
       localStorage.removeItem("user_type");
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("active");
@@ -92,18 +141,10 @@ export default new Vuex.Store({
       state.status = "";
       state.user_type = -1;
     },
-    snackbarToggle: function ({ state }, data) {
-      if (data.toggle == false) {
-        state.snackbar = data.toggle;
-      } else {
-        state.snackbar = data.toggle;
-        state.textSnackbar = data.text;
-      }
-    },
+
     login({ commit, state }, data) {
       state.loading_login = true;
       return new Promise((resolve, reject) => {
-        // commit("auth_request");
         axios({
           url: `${state.server}` + "/api/login",
           data: data,
@@ -120,15 +161,20 @@ export default new Vuex.Store({
             localStorage.setItem("full_name", data.result[0].user_name);
             localStorage.setItem("user_type", data.result[0].user_type);
             localStorage.setItem("active", data.result[0].active);
-            //
 
-            // commit("auth_success", token);
             resolve(response);
           })
           .catch((err) => {
-            // commit("auth_error");
             state.loading_login = false;
             localStorage.removeItem("token");
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            this.commit("SNACK_MESSAGE", snack_message);
+            setTimeout(() => {
+              this.commit("TIME_OUT", snack_message);
+            }, 4000);
 
             reject(err);
           });
@@ -138,18 +184,29 @@ export default new Vuex.Store({
       commit("CLEAR_USER");
     },
     getStatistics({ commit, state }) {
-      axios({
-        url: `${state.server}` + "/api/statistics",
-        method: "GET",
-      })
-        .then((resp) => {
-          console.log(resp);
-          commit("statistics_request", resp.data.result);
-          resolve(resp);
+      state.loading_statistics = true;
+      return new Promise((resolve) => {
+        axios({
+          url: `${state.server}` + "/api/statistics",
+          method: "GET",
         })
-        .catch((err) => {
-          reject(err);
-        });
+          .then((resp) => {
+            state.loading_statistics = false;
+            commit("statistics_request", resp.data.result);
+            resolve(resp);
+          })
+          .catch(() => {
+            state.loading_statistics = false;
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
+            this.commit("SNACK_MESSAGE", snack_message);
+            setTimeout(() => {
+              this.commit("TIME_OUT", snack_message);
+            }, 4000);
+          });
+      });
     },
   },
   modules: {
@@ -161,5 +218,6 @@ export default new Vuex.Store({
     UserModule,
     OrderMoudle,
     SettingMoudle,
+    font,
   },
 });

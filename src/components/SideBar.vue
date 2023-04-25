@@ -7,7 +7,6 @@
       clipped-left
       elevation="4"
       v-if="!$route.path.includes('login')">
-      <!-- this app  عملها تخلي الناف بار فوق سايد بار يعني تخلي عنصر هو اول شي  -->
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>MEDO STORE</v-toolbar-title>
     </v-app-bar>
@@ -22,8 +21,8 @@
       v-if="!$route.path.includes('login')">
       <v-sheet class="pa-4">
         <div class="text-center">
-          <v-avatar class="mb-2" color="grey darken-1" size="70">
-            <img src="/images/FullLogo.png" />
+          <v-avatar class="mb-2" size="70">
+            <Icon icon="mdi:user-circle" color="#624fc6" width="30" />
           </v-avatar>
           <h3>{{ full_name }}</h3>
         </div>
@@ -113,31 +112,39 @@
           link: "admins",
         },
         {
-          title: "الاعدادات",
-          icon: "icon-park-solid:setting",
+          title: "تواصل معنا",
+          icon: "pixelarticons:contact-plus",
+          link: "contact-us",
+        },
+        {
+          title: "اعدادات الحساب",
+          icon: "uiw:setting",
           link: "settings",
         },
       ],
     }),
+    mounted() {
+      if (localStorage.getItem("token")) {
+        this.$store.dispatch("UserModule/info_auth");
+      }
+    },
     computed: {
       full_name() {
         return this.$store.state.full_name;
+      },
+      server() {
+        return this.$store.state.server;
+      },
+      loading() {
+        return this.$store.state.UserModule.pop_loading;
       },
     },
     methods: {
       logout() {
         this.$store.dispatch("resetFields");
-        this.user_type = -1;
         this.$store.dispatch("logout");
       },
     },
-
-    //  هاي تخلي الدرور يختفي عند الضغط على اي زر تريدة
-    // watch: {
-    //   group() {
-    //     this.drawer = false;
-    //   },
-    // },
   };
 </script>
 

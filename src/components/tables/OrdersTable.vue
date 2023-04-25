@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto mt-14 card-table" width="100%">
+  <v-card class="mx-auto mt-10 card-table" width="100%">
     <v-row class="d-flex justify-center mb-9">
       <v-col cols="12" sm="12" md="12" lg="12">
         <v-data-table
@@ -97,10 +97,16 @@
               <td class="text-center font-weight-black">
                 {{ item.user.user_name }}
               </td>
-              <td class="text-center font-weight-black">
+              <td
+                class="text-center font-weight-black"
+                v-if="item.phone_number">
                 {{ item.phone_number }}
               </td>
-              <td class="text-center font-weight-black">{{ item.address }}</td>
+              <td class="text-center font-weight-black" v-else>لايوجد</td>
+              <td class="text-center font-weight-black" v-if="item.address">
+                {{ item.address }}
+              </td>
+              <td class="text-center font-weight-black" v-else>لايوجد</td>
               <td
                 class="text-center font-weight-black"
                 style="color: green"
@@ -109,7 +115,7 @@
               </td>
               <td class="text-center font-weight-black" v-else>لايوجد كوبون</td>
               <td class="text-center font-weight-black" style="direction: ltr">
-                {{ item.total_cost | formatNumber }} IQD
+                {{ item.total_cost | formatNumber }} د.ع
               </td>
 
               <td class="text-center font-weight-black">
@@ -254,7 +260,13 @@
                 reverse
                 label="عدد العناصر"></v-select>
             </v-col>
-            <v-col align-self="center" cols="5" sm="5" md="3" lg="3">
+            <v-col
+              align-self="center"
+              class="mr-3"
+              cols="5"
+              sm="5"
+              md="4"
+              lg="4">
               <v-pagination
                 v-model="pagination.page"
                 :length="pageCount"
@@ -283,63 +295,68 @@
             text: "رقم الطلب",
             value: "serial_number",
             align: "center",
-            class: "secondary white--text title",
-            sortable: false,
+            class: "white--text title",
           },
           {
             text: "حالة الطلب ",
             value: "status",
             align: "center",
-            class: "secondary white--text title",
+            class: "white--text title",
           },
           {
             text: "اسم المستخدم",
             value: "user name",
             align: "center",
-            class: "secondary white--text title",
-            sortable: false,
+            class: "white--text title",
           },
           {
             text: "رقم الهاتف",
             value: "phone_number",
             align: "center",
-            class: "secondary white--text title",
+            class: "white--text title",
+            sortable: false,
           },
           {
             text: "العنوان ",
             align: "center",
             value: "address",
-            class: "secondary white--text title",
+            class: "white--text title",
+            sortable: false,
           },
           {
             text: "الخصم",
             align: "center",
             value: "coupon",
-            class: "secondary white--text title",
+            class: "white--text title",
+            sortable: false,
           },
           {
             text: "مجموع الطلب",
             align: "center",
             value: "total_cost",
-            class: "secondary white--text title",
+            class: "white--text title",
+            sortable: false,
           },
           {
             text: "تأريخ الشراء",
             align: "center",
             value: "created_at",
-            class: "secondary white--text title",
+            class: "white--text title",
           },
           {
             text: "المنتجات",
             align: "center",
             value: "products",
-            class: "secondary white--text title",
+            class: "white--text title",
+
+            sortable: false,
           },
 
           {
             text: "العمليات",
             align: "center",
-            class: "secondary white--text title",
+            class: "white--text title",
+
             sortable: false,
           },
         ],

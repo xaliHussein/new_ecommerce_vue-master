@@ -2,16 +2,7 @@
   <v-app id="app">
     <v-main>
       <side-bar></side-bar>
-      <v-snackbar v-model="snackbar" shaped :multi-line="true">
-        <div v-for="(text, index) in textSnackbar.split('\n')" :key="index">
-          {{ index == 0 ? "" : index + "-" }} {{ text }}
-        </div>
-        <template v-slot:action="{ attrs }">
-          <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-            أغلاق
-          </v-btn>
-        </template>
-      </v-snackbar>
+      <SnackBar v-if="snackbar" :snack_message="snack_message" />
       <router-view />
     </v-main>
   </v-app>
@@ -19,25 +10,23 @@
 
 <script>
   import sideBar from "./components/SideBar.vue";
+  import SnackBar from "./components/layout/Snackbar";
   export default {
     name: "App",
 
     data: () => ({}),
     components: {
       sideBar,
+      SnackBar,
     },
 
     computed: {
-      snackbar: {
-        set: function () {
-          this.$store.dispatch("snackbarToggle", { toggle: false });
-        },
-        get: function () {
-          return this.$store.state.snackbar;
-        },
+      snackbar() {
+        return this.$store.getters.snackbar;
       },
-      textSnackbar: function () {
-        return this.$store.state.textSnackbar;
+
+      snack_message() {
+        return this.$store.state.snack_message;
       },
     },
   };

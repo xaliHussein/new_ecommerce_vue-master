@@ -50,7 +50,7 @@
                 single-line
                 clearable
                 :items="brands"
-                label=" اختر ماركة"></v-autocomplete>
+                label=" اختر العلامة التجارية"></v-autocomplete>
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="4">
               <v-text-field
@@ -143,7 +143,7 @@
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="4">
               <v-textarea
-                type="test"
+                type="text"
                 label=" .. ادخل وصف المنتج هنا"
                 rows="1"
                 class="font-weight-black text-textarea"
@@ -411,10 +411,10 @@
         console.log(fileList);
       },
       beforeRemove(index, done, fileList) {
-        console.log("index", index, fileList);
-        var r = confirm("remove image");
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload.splice(index, 1);
         }
       },
       editImage(formData, index, fileList) {
@@ -432,16 +432,18 @@
           data["desc"] = this.selected_object.desc;
           data["advance_details"] = this.advance_details;
           data["images"] = this.upload;
-          if (this.selected_object.offer != null) {
+          if (
+            this.selected_object.offer != null &&
+            this.selected_object.offer != 0
+          ) {
             data["offer"] = this.selected_object.offer;
             data["offer_expired"] = this.selected_object.offer_expired;
           }
-          this.addProduct(data);
+
+          this.$store.dispatch("ProductsMoudle/addProduct", data);
+
           this.reset();
         }
-      },
-      addProduct(data) {
-        this.$store.dispatch("ProductsMoudle/addProduct", data);
       },
       editProduct(data) {
         console.log(data);
@@ -452,7 +454,6 @@
         this.$refs.form.reset();
         this.images = [];
         this.upload = [];
-        this.$store.state.ProductsMoudle.isEdit = false;
       },
     },
     created() {
@@ -528,26 +529,4 @@
     color: #ff0000;
     font-weight: bold;
   }
-
-  /* 
-
-
-
- [
-    {
-        "ss": "aaa",
-        "اللون": "xxx"
-    },
-    {
-        "الحجم": "xxx"
-    },
-      {
-        "ss": "aaa",
-        "اللون": "xxx"
-    },
-    {
-        "الحجم": "xxx"
-    }
-]
-*/
 </style>

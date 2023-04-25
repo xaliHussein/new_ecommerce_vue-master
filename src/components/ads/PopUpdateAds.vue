@@ -200,10 +200,10 @@
         console.log(fileList);
       },
       beforeRemove(index, done, fileList) {
-        console.log("index", index, fileList);
-        var r = confirm("remove image");
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload.splice(index, 1);
         }
       },
       editImage(formData, index, fileList) {

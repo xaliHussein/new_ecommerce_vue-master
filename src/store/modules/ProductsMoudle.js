@@ -7,6 +7,7 @@ const ProductsMoudle = {
     products: [],
     product_state: "done",
     table_loading: false,
+    table_delete_loading: false,
     loading_add_product: false,
     pop_loading: false,
     productQuery: "",
@@ -55,20 +56,14 @@ const ProductsMoudle = {
       state.table_loading = false;
     },
     delete_advance_details(state, product) {
-      console.log(product);
       let index = state.products.findIndex((e) => e.id == product.id);
-      console.log(index);
-      console.log(state.products[index].advance_details);
-      // JSON.parse(state.products[index].advance_details).splice(data.index, 1)
       Vue.set(state.products, index, product);
-      // Vue.delete(JSON.parse(state.products[index].advance_details), data.index);
       state.product_state = "done";
       state.table_loading = false;
     },
     delete_image(state, product) {
       let index = state.products.findIndex((e) => e.id == product.id);
       Vue.set(state.products, index, product);
-      console.log(product);
     },
   },
   actions: {
@@ -102,8 +97,6 @@ const ProductsMoudle = {
           state.productQuery.length > 0
         )
           query = `&query=${state.productQuery}`;
-        console.log(query);
-        console.log(skip, limit);
 
         axios({
           url:
@@ -116,18 +109,23 @@ const ProductsMoudle = {
             sort +
             query,
           method: "GET",
-        }).then((resp) => {
-          state.table_loading = false;
-          state.pageCount = resp.data.count;
-
-          commit("product_success", resp.data.result);
-          dispatch(
-            "snackbarToggle",
-            { toggle: true, text: resp.data.message },
-            { root: true }
-          );
-          resolve(resp);
-        });
+        })
+          .then((resp) => {
+            state.table_loading = false;
+            state.pageCount = resp.data.count;
+            commit("product_success", resp.data.result);
+            resolve(resp);
+          })
+          .catch(() => {
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
+            this.commit("SNACK_MESSAGE", snack_message);
+            setTimeout(() => {
+              this.commit("TIME_OUT", snack_message);
+            }, 4000);
+          });
       });
     },
 
@@ -146,11 +144,14 @@ const ProductsMoudle = {
         })
           .then((resp) => {
             commit("add_product_success", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             state.table_loading = false;
             state.loading_add_product = false;
             resolve(resp);
@@ -158,12 +159,14 @@ const ProductsMoudle = {
           .catch((err) => {
             state.table_loading = false;
             state.loading_add_product = false;
-            commit("product_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
@@ -182,21 +185,27 @@ const ProductsMoudle = {
           .then((resp) => {
             state.pop_loading = false;
             commit("product_edit_success", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.pop_loading = false;
             commit("product_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
@@ -214,29 +223,33 @@ const ProductsMoudle = {
         })
           .then((resp) => {
             state.pop_loading = false;
-            // console.log(resp)
+
             commit("delete_product", data);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.pop_loading = false;
-            commit("product_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
     async deleteAdvanceDetails({ commit, state, dispatch, rootState }, data) {
-      state.table_loading = true;
-      console.log(data);
+      state.table_delete_loading = true;
       return new Promise((resolve) => {
         commit("product_request");
 
@@ -250,34 +263,36 @@ const ProductsMoudle = {
           method: "PUT",
         })
           .then((resp) => {
-            state.table_loading = false;
-            console.log(resp);
+            state.table_delete_loading = false;
             commit("delete_advance_details", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
-            state.table_loading = false;
+            state.table_delete_loading = false;
 
-            commit("product_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
     async deleteImage({ commit, state, dispatch, rootState }, data) {
       state.table_loading = true;
-      console.log(data);
-      return new Promise((resolve) => {
-        commit("product_request");
 
+      return new Promise((resolve) => {
         axios({
           url: `${rootState.server}` + "/api/delete_image",
           data: data,
@@ -288,24 +303,28 @@ const ProductsMoudle = {
         })
           .then((resp) => {
             state.table_loading = false;
-            console.log(resp);
+
             commit("delete_image", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.table_loading = false;
-
-            commit("product_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },

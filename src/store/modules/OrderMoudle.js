@@ -85,17 +85,23 @@ const OrderMoudle = {
             limit +
             query,
           method: "GET",
-        }).then((resp) => {
-          state.table_loading = false;
-          state.pageCount = resp.data.count;
-          commit("order_success", resp.data.result);
-          dispatch(
-            "snackbarToggle",
-            { toggle: true, text: resp.data.message },
-            { root: true }
-          );
-          resolve(resp);
-        });
+        })
+          .then((resp) => {
+            state.table_loading = false;
+            state.pageCount = resp.data.count;
+            commit("order_success", resp.data.result);
+            resolve(resp);
+          })
+          .catch(() => {
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
+          });
       });
     },
 
@@ -130,26 +136,28 @@ const OrderMoudle = {
           method: "PUT",
         })
           .then((resp) => {
-            console.log(resp);
             state.table_loading = false;
             commit("order_status_change_success", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.table_loading = false;
-            commit("order_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
-
-            console.warn(err);
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },

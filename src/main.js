@@ -2,20 +2,19 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import "./plugins/UploadImage";
 import "./plugins/filter";
 import "./plugins/iconify";
 import "./plugins/moment";
+import "./plugins/print";
+import "./plugins/vueLazyload";
+
 import vuetify from "./plugins/vuetify";
 import Axios from "axios";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue"; // import lottie-vuejs
-import VueLazyload from "vue-lazyload";
-import Print from "vue-print-nb";
-import VueUploadMultipleImage from "vue-upload-multiple-image";
 
-Vue.component("VueUploadMultipleImage", VueUploadMultipleImage);
-Vue.use(Print);
 Vue.use(LottieAnimation); // add lottie-animation to your global scope
-Vue.use(VueLazyload);
+
 Vue.use(require("vue-moment"));
 
 Vue.config.productionTip = false;

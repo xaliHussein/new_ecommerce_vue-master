@@ -32,7 +32,9 @@
                   @upload-success="uploadImageSuccess"
                   @before-remove="beforeRemove"
                   :data-images="images"
-                  maxImageSize="5" />
+                  maxImageSize="5"
+                  dragText="اضف صورة"
+                  browseText="" />
               </div>
               <h3 class="text-center mt-n4">اختر ايقونة للقسم :</h3>
             </v-col>
@@ -96,10 +98,10 @@
         });
       },
       beforeRemove(index, done, fileList) {
-        console.log("index", index, fileList);
-        var r = confirm("remove image");
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload.splice(index, 1);
         }
       },
 

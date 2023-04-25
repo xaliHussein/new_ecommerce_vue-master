@@ -105,15 +105,18 @@ const CategoryModule = {
             state.table_loading = false;
             state.pageCount = resp.data.count;
             commit("category_success", resp.data.result);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
             resolve(resp);
           })
           .catch((err) => {
             state.table_loading = false;
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
@@ -133,23 +136,28 @@ const CategoryModule = {
         })
           .then((resp) => {
             commit("add_category_success", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             state.table_loading = false;
             state.loading_add_Category = false;
             resolve(resp);
           })
           .catch((err) => {
             state.loading_add_Category = false;
-            commit("category_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },
@@ -170,21 +178,26 @@ const CategoryModule = {
             console.log(resp);
             state.pop_loading = false;
             commit("category_edit_success", resp.data.result[0]);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.pop_loading = false;
-            commit("category_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            this.commit("SNACK_MESSAGE", snack_message);
+            setTimeout(() => {
+              this.commit("TIME_OUT", snack_message);
+            }, 4000);
           });
       });
     },
@@ -202,23 +215,27 @@ const CategoryModule = {
         })
           .then((resp) => {
             state.pop_loading = false;
-            // console.log(resp)
             commit("delete_category", data);
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: resp.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#00C853";
+            snack_message["icon"] = "clarity:success-standard-solid";
+            snack_message["text"] = resp.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
             resolve(resp);
           })
           .catch((err) => {
             state.pop_loading = false;
-            commit("category_error");
-            dispatch(
-              "snackbarToggle",
-              { toggle: true, text: err.response.data.message },
-              { root: true }
-            );
+            let snack_message = {};
+            snack_message["color"] = "#B71C1C";
+            snack_message["icon"] = "ri:close-circle-fill";
+            snack_message["text"] = err.response.data.message;
+            commit("SNACK_MESSAGE", snack_message, { root: true });
+            setTimeout(() => {
+              commit("TIME_OUT", snack_message, { root: true });
+            }, 4000);
           });
       });
     },

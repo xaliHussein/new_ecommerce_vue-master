@@ -29,6 +29,7 @@
                     rounded
                     single-line
                     :rules="userNameRules"
+                    clearable
                     label="اسم المستخدم او رقم الهاتف " />
 
                   <v-text-field
@@ -38,17 +39,13 @@
                     reverse
                     rounded
                     single-line
+                    clearable
                     class="font-weight-black text-field"
                     :type="showPassword ? 'text' : 'password'"
                     label="كلمة المرور"
                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     @click:append="showPassword = !showPassword"
                     :rules="PasswordsRules" />
-                  <h4
-                    :to="{ name: 'register' }"
-                    class="link-h4 d-flex justify-end">
-                    هل نسيت كلمة المرور ؟
-                  </h4>
                 </v-card-text>
 
                 <v-card-actions>
@@ -108,6 +105,7 @@
           data["password"] = this.password;
           this.$store.dispatch("login", data).then(() => {
             this.$router.push("/");
+            location.reload();
           });
         }
       },
@@ -140,7 +138,6 @@
   }
   .login {
     background-color: #624fc6;
-    /* opacity: 80%; */
     height: 100%;
   }
 </style>

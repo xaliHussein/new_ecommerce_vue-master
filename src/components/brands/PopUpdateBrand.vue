@@ -36,7 +36,9 @@
                     @before-remove="beforeRemove"
                     @edit-image="editImage"
                     :data-images="images"
-                    maxImageSize="5" />
+                    maxImageSize="5"
+                    dragText="اضف صورة"
+                    browseText="" />
                 </div>
 
                 <h3 class="text-center mt-n4">
@@ -107,22 +109,21 @@
         }
       },
 
-      uploadImageSuccess1(formData, index, fileList) {
+      uploadImageSuccess(formData, index, fileList) {
         this.upload_img_edit = [];
         fileList.forEach((element) => {
           let img = element.path;
           this.upload_img_edit.push(img);
         });
-        console.log(fileList);
       },
-      beforeRemove1(index, done, fileList) {
-        console.log("index", index, fileList);
-        var r = confirm("remove image");
+      beforeRemove(index, done, fileList) {
+        var r = confirm("سوف يتم حذف الصورة");
         if (r == true) {
           done();
+          this.upload.splice(index, 1);
         }
       },
-      editImage1(formData, index, fileList) {
+      editImage(formData, index, fileList) {
         console.log("edit data", formData, index, fileList);
       },
     },

@@ -1,94 +1,4 @@
 <template>
-  <!-- images dialog -->
-  <!-- <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialogImages" persistent max-width="900">
-          <v-card>
-            <v-card-title class="text-h5 secondary white--text">
-              صور المنتج
-            </v-card-title>
-            <v-card-text class="mt-5 text-h5 dark--text">
-              <v-row>
-                <v-col
-                  v-for="(data, index) in item.images"
-                  :key="index"
-                  cols="12"
-                  sm="3">
-                  <v-btn
-                    v-if="item.images.length > 1"
-                    @click="deleteImage(data)"
-                    class="imgDelete"
-                    icon
-                    color="red">
-                    <i class="fa fa-close fa-lg" aria-hidden="true"></i>
-                  </v-btn>
-                  <a :href="server + data.image">
-                    <img
-                      :src="server + data.image"
-                      alt="image"
-                      width="150px"
-                      height="150px"
-                      class="img" /> </a
-                ></v-col>
-              </v-row>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                class="secondary"
-                color="white darken-1"
-                text
-                @click="dialogImages = false">
-                غلق
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template> -->
-  <!-- info dialog -->
-  <!-- <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialogInfo" persistent max-width="600">
-          <v-card>
-            <v-card-title>التفاصيل </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text style="height: 300px; width: 500px" class="mt-3">
-              <table id="customers">
-                <tr>
-                  <th>التفاصيل</th>
-                  <th>القيمة</th>
-                </tr>
-                <tr v-for="(data, index) in this.info" :key="index">
-                  <th>
-                    <span
-                      v-for="(objKey, indexkey) in Object.keys(data)"
-                      :key="indexkey">
-                      {{ objKey }} =>{{ data[objKey] }} <br
-                    /></span>
-                  </th>
-                  <th>
-                    <v-btn color="red" icon dark @click="delete_detail(index)">
-                      <i class="fa fa-close fa-lg" aria-hidden="true"></i>
-                    </v-btn>
-                  </th>
-                </tr>
-              </table>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions dir="ltr">
-              <v-btn
-                class="primary"
-                color="white darken-1"
-                text
-                @click="dialogInfo = false">
-                غلق
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template> -->
   <v-card class="mx-auto mt-9 mb-9 card-table">
     <v-row class="d-flex justify-center mb-9">
       <v-col cols="12" sm="12" md="12" lg="12">
@@ -132,7 +42,10 @@
                 {{ item.brand.name }}
               </td>
               <td class="text-center font-weight-black">
-                {{ item.price | formatNumber }}
+                {{ item.quantity }}
+              </td>
+              <td class="text-center font-weight-black" dir="ltr">
+                {{ item.price | formatNumber }} د.ع
               </td>
               <td class="text-center font-weight-black">{{ item.desc }}</td>
               <td class="text-center font-weight-black">
@@ -154,6 +67,23 @@
                   <span>حذف المنتج</span>
                 </v-tooltip>
 
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click="popEditImageDetails(item)"
+                      fab
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on">
+                      <Icon
+                        icon="tabler:list-details"
+                        color="#FF9800"
+                        width="30" />
+                    </v-btn>
+                  </template>
+                  <span>تعديل تفاصيل و صور المنتج</span>
+                </v-tooltip>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -207,6 +137,10 @@
           :value="dialogDelete"
           v-on:deleteProduct="deleteProduct()"
           v-on:popClose="dialogDelete = !dialogDelete" />
+        <PopEditPorductImagesDetails
+          :dialog="dialogEditImageDetails"
+          :productImgDet="productImgDet"
+          v-on:popClose="dialogEditImageDetails = !dialogEditImageDetails" />
       </v-col>
     </v-row>
   </v-card>
@@ -215,8 +149,14 @@
   import About from "@/views/About.vue";
   import PopEdit from "@/components/products/PopEdit.vue";
   import PopDeletePorduct from "@/components/products/PopDeletePorduct.vue";
+  import PopEditPorductImagesDetails from "@/components/products/PopEditPorductImagesDetails.vue";
   export default {
-    components: { About, PopEdit, PopDeletePorduct },
+    components: {
+      About,
+      PopEdit,
+      PopDeletePorduct,
+      PopEditPorductImagesDetails,
+    },
     data() {
       return {
         headers: [
@@ -233,8 +173,14 @@
             align: "center",
           },
           {
-            text: "الماركة",
+            text: "العلامة التجارية",
             value: "brand",
+            class: "secondary white--text title",
+            align: "center",
+          },
+          {
+            text: "الكمية المتبقية",
+            value: "quantity",
             class: "secondary white--text title",
             align: "center",
           },
@@ -260,10 +206,12 @@
         dialogDelete: false,
         delete_product_id: "",
         dialog: false,
+        dialogEditImageDetails: false,
         pagination: {},
         info: [],
         // advance_details_info: {},
         product_details: {},
+        productImgDet: [],
         items: [5, 10, 25, 50, 100],
       };
     },
@@ -301,13 +249,6 @@
           return this.$store.state.ProductsMoudle.params;
         },
       },
-      // advance() {
-      //   let data = this.item.advance_details;
-      //   Object.assign(this.advance_details_info, JSON.parse(data));
-      //   console.log(JSON.parse(data));
-      //   return this.advance_details_info;
-      // },
-      //
     },
 
     methods: {
@@ -332,19 +273,15 @@
         this.product_details = item;
         this.dialog = true;
       },
+      popEditImageDetails(item) {
+        this.productImgDet = [];
+        this.productImgDet.push(item);
+        this.dialogEditImageDetails = true;
+      },
       queryChange(val) {
         this.searchDebounce();
       },
-      // getItem(item, type) {
-      //   this.item = item;
-      //   if (type == "delete") this.dialogDelete = true;
-      //   else if (type == "images") this.dialogImages = true;
-      //   else if (type == "info") {
-      //     this.dialogInfo = true;
-      //     this.info = JSON.parse(item.advance_details);
-      //     console.log(this.info);
-      //   }
-      // },
+
       deleteImage(item) {
         console.log(item);
         let data = {};

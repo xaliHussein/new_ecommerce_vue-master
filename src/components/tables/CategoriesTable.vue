@@ -36,9 +36,14 @@
             <tr>
               <td class="text-center font-weight-black">{{ item.name }}</td>
               <td class="text-center font-weight-black">
-                <v-avatar rounded size="100">
-                  <img :src="server + item.icone" alt="image" />
-                </v-avatar>
+                <a :href="server + item.icone" id="image">
+                  <img
+                    :src="server + item.icone"
+                    alt="image"
+                    width="50px"
+                    height="50px"
+                    class="img" />
+                </a>
               </td>
 
               <td class="text-center font-weight-black">
