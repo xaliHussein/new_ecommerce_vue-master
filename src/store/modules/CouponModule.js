@@ -107,7 +107,7 @@ const CouponModule = {
           })
           .catch(() => {
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -135,7 +135,7 @@ const CouponModule = {
             state.loading_add_coupon = false;
             commit("add_coupon_success", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -148,7 +148,7 @@ const CouponModule = {
             state.table_loading = false;
             state.loading_add_coupon = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -176,7 +176,7 @@ const CouponModule = {
             state.pop_loading = false;
             commit("coupon_edit_success", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -188,7 +188,7 @@ const CouponModule = {
           .catch((err) => {
             state.pop_loading = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -214,7 +214,7 @@ const CouponModule = {
             state.pop_loading = false;
             commit("delete_coupon", data);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -226,7 +226,7 @@ const CouponModule = {
           .catch((err) => {
             state.pop_loading = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });

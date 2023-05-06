@@ -33,7 +33,6 @@
             type="list-item-avatar-three-line"></v-skeleton-loader>
         </v-card>
       </v-col>
-
       <v-col cols="12" sm="12" md="6" lg="6">
         <v-card class="card" width="100%" :height="415">
           <v-card-title class="d-flex justify-center pb-0 mb-0"
@@ -43,7 +42,7 @@
             :width="width"
             :height="height"
             :chart-options="options"
-            :chart-data="Data" />
+            :chart-data="chart_week" />
         </v-card>
       </v-col>
       <v-col cols="12" sm="12" md="6" lg="6">
@@ -183,6 +182,9 @@
       },
       chartData() {
         return this.$store.state.chartData;
+      },
+      chart_week() {
+        return this.$store.state.chart_week;
       },
       loading_statistics() {
         return this.$store.state.loading_statistics;

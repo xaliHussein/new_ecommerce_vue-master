@@ -118,7 +118,7 @@ const ProductsMoudle = {
           })
           .catch(() => {
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = "حدث مشكلة في الاتصال بالخادم";
             this.commit("SNACK_MESSAGE", snack_message);
@@ -145,7 +145,7 @@ const ProductsMoudle = {
           .then((resp) => {
             commit("add_product_success", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -160,7 +160,7 @@ const ProductsMoudle = {
             state.table_loading = false;
             state.loading_add_product = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -186,7 +186,7 @@ const ProductsMoudle = {
             state.pop_loading = false;
             commit("product_edit_success", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -199,7 +199,7 @@ const ProductsMoudle = {
             state.pop_loading = false;
             commit("product_error");
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -226,7 +226,7 @@ const ProductsMoudle = {
 
             commit("delete_product", data);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -238,7 +238,7 @@ const ProductsMoudle = {
           .catch((err) => {
             state.pop_loading = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -266,7 +266,7 @@ const ProductsMoudle = {
             state.table_delete_loading = false;
             commit("delete_advance_details", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -279,7 +279,7 @@ const ProductsMoudle = {
             state.table_delete_loading = false;
 
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -306,7 +306,7 @@ const ProductsMoudle = {
 
             commit("delete_image", resp.data.result[0]);
             let snack_message = {};
-            snack_message["color"] = "#00C853";
+            snack_message["color"] = "#21ce8f";
             snack_message["icon"] = "clarity:success-standard-solid";
             snack_message["text"] = resp.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });
@@ -318,7 +318,7 @@ const ProductsMoudle = {
           .catch((err) => {
             state.table_loading = false;
             let snack_message = {};
-            snack_message["color"] = "#B71C1C";
+            snack_message["color"] = "#ef4444";
             snack_message["icon"] = "ri:close-circle-fill";
             snack_message["text"] = err.response.data.message;
             commit("SNACK_MESSAGE", snack_message, { root: true });

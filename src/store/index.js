@@ -27,6 +27,8 @@ export default new Vuex.Store({
     status: "",
     statistics: [],
     chartData: {},
+
+    chart_week: [],
   },
 
   getters: {
@@ -60,6 +62,33 @@ export default new Vuex.Store({
       let chartData = {};
       let labels = [];
       let pie_data = [];
+
+      let object2 = {};
+      let datasets2 = [];
+      let chartData2 = {};
+
+      let object3 = {};
+      (object2["label"] = "الطلبات المكتملة"),
+        (object2["backgroundColor"] = "rgba(98,79,198, 0.5)"),
+        (object2["borderColor"] = "#624fc6"),
+        (object2["pointRadius"] = 7),
+        (object2["pointHoverRadius"] = 13),
+        (object2["pointStyle"] = "circle"),
+        (object2["data"] = statistics.resulte_week_accept[0]),
+        datasets2.push(object2);
+
+      (object3["label"] = "الطلبات المرفوضة"),
+        (object3["backgroundColor"] = "rgba(255,99,132, 0.5)"),
+        (object3["borderColor"] = "#FF6384"),
+        (object3["pointRadius"] = 7),
+        (object3["pointHoverRadius"] = 13),
+        (object3["pointStyle"] = "circle"),
+        (object3["data"] = statistics.resulte_week_reject[0]),
+        datasets2.push(object3);
+      console.log("datasets2", datasets2);
+      chartData2["labels"] = statistics.resulte_week_accept[1];
+      chartData2["datasets"] = datasets2;
+
       statistics.brands.forEach((element) => {
         labels.push(element.name);
         pie_data.push(element.products_count);
@@ -97,7 +126,7 @@ export default new Vuex.Store({
         },
         {
           title: "الاقسام",
-          statistics: 6,
+          statistics: statistics.categories,
           color: "#70e000",
           icon: "material-symbols:format-list-bulleted",
         },
@@ -117,6 +146,7 @@ export default new Vuex.Store({
 
       state.statistics = data;
       state.chartData = chartData;
+      state.chart_week = chartData2;
     },
     LOGIN_USER(state, data) {
       state.user_name = data.result[0].user_name;
@@ -170,7 +200,7 @@ export default new Vuex.Store({
             let snack_message = {};
             snack_message["color"] = "#B71C1C";
             snack_message["icon"] = "ri:close-circle-fill";
-            snack_message["text"] = err.response.data.message;
+            snack_message["text"] = "ادخلت اسم مستخدم او كلمة مرور غير صحيحة";
             this.commit("SNACK_MESSAGE", snack_message);
             setTimeout(() => {
               this.commit("TIME_OUT", snack_message);
